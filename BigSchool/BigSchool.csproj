@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -80,12 +81,21 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -195,20 +205,23 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Api\CoursesController.cs" />
+    <Compile Include="Controllers\AttendancesController.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
+    <Compile Include="Controllers\FollowingsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="DTOs\AttendanceDto.cs" />
+    <Compile Include="DTOs\FollowingDto.cs" />
+    <Compile Include="DTOs\UnFollowDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201903270808260_InitialModel.cs" />
     <Compile Include="Migrations\201903270808260_InitialModel.Designer.cs">
       <DependentUpon>201903270808260_InitialModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201903270838285_CreateTableCourse.cs" />
-    <Compile Include="Migrations\201903270838285_CreateTableCourse.Designer.cs">
-      <DependentUpon>201903270838285_CreateTableCourse.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201903270841059_PopulateCategoryTable.cs" />
     <Compile Include="Migrations\201903270841059_PopulateCategoryTable.Designer.cs">
@@ -218,17 +231,43 @@
     <Compile Include="Migrations\201904030912406_AddNameColumnToApplicationUser.Designer.cs">
       <DependentUpon>201904030912406_AddNameColumnToApplicationUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201904090250023_CreateTableCourse.cs" />
+    <Compile Include="Migrations\201904090250023_CreateTableCourse.Designer.cs">
+      <DependentUpon>201904090250023_CreateTableCourse.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904090403431_AddAttendance.cs" />
+    <Compile Include="Migrations\201904090403431_AddAttendance.Designer.cs">
+      <DependentUpon>201904090403431_AddAttendance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904090702464_AddFollowingsTable.cs" />
+    <Compile Include="Migrations\201904090702464_AddFollowingsTable.Designer.cs">
+      <DependentUpon>201904090702464_AddFollowingsTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904100152052_AddIsCanceledColumnToCourse.cs" />
+    <Compile Include="Migrations\201904100152052_AddIsCanceledColumnToCourse.Designer.cs">
+      <DependentUpon>201904100152052_AddIsCanceledColumnToCourse.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904100253034_AddFollowingNotification.cs" />
+    <Compile Include="Migrations\201904100253034_AddFollowingNotification.Designer.cs">
+      <DependentUpon>201904100253034_AddFollowingNotification.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
+    <Compile Include="Models\Attendance.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Course.cs" />
-    <Compile Include="Models\ApplicetionUser.cs" />
+    <Compile Include="Models\ApplicationUser.cs" />
+    <Compile Include="Models\Following.cs" />
+    <Compile Include="Models\FollowingNotification.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\CoursesViewModel.cs" />
     <Compile Include="ViewModels\CourseViewModel.cs" />
     <Compile Include="ViewModels\CustomViewModel.cs" />
+    <Compile Include="ViewModels\FollowingViewModel.cs" />
+    <Compile Include="ViewModels\FollowNotificationViewModel.cs" />
     <Compile Include="ViewModels\FutureDate.cs" />
     <Compile Include="ViewModels\ValidTime.cs" />
   </ItemGroup>
@@ -240,6 +279,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\ai.0.22.9-build00167.js" />
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
+    <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -289,9 +329,15 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Courses\Create.cshtml" />
+    <Content Include="Views\Courses\Attending.cshtml" />
+    <Content Include="Views\Courses\Mine.cshtml" />
+    <Content Include="Views\Courses\Following.cshtml" />
+    <Content Include="Views\Courses\FollowingMeList.cshtml" />
+    <Content Include="Views\Courses\FollowNotification.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Attendances\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -306,14 +352,26 @@
     <EmbeddedResource Include="Migrations\201903270808260_InitialModel.resx">
       <DependentUpon>201903270808260_InitialModel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201903270838285_CreateTableCourse.resx">
-      <DependentUpon>201903270838285_CreateTableCourse.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903270841059_PopulateCategoryTable.resx">
       <DependentUpon>201903270841059_PopulateCategoryTable.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201904030912406_AddNameColumnToApplicationUser.resx">
       <DependentUpon>201904030912406_AddNameColumnToApplicationUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904090250023_CreateTableCourse.resx">
+      <DependentUpon>201904090250023_CreateTableCourse.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904090403431_AddAttendance.resx">
+      <DependentUpon>201904090403431_AddAttendance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904090702464_AddFollowingsTable.resx">
+      <DependentUpon>201904090702464_AddFollowingsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904100152052_AddIsCanceledColumnToCourse.resx">
+      <DependentUpon>201904100152052_AddIsCanceledColumnToCourse.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904100253034_AddFollowingNotification.resx">
+      <DependentUpon>201904100253034_AddFollowingNotification.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

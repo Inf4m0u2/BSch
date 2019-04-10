@@ -8,9 +8,10 @@
 }
 
 <h2>Create</h2>
-@using (Html.BeginForm("Create", "Courses"))
+@using (Html.BeginForm(Model.Action, "Courses"))
 {
     @Html.AntiForgeryToken()
+    @Html.HiddenFor(m=> m.Id)
     <div class="form-group">
         @Html.LabelFor(n => n.Place)
         @Html.TextBoxFor(n => n.Place, new { @class = "form-control" })
@@ -32,8 +33,8 @@
         @Html.ValidationMessageFor(m => m.Category)
     </div>
     <button type="submit" value="Save" class="btn btn-primary">Save</button>
-    <div class="form-group"></div>
-    <div class="form-group"></div>
+    @*<div class="form-group"></div>
+    <div class="form-group"></div>*@
 }
 
 @section scripts
